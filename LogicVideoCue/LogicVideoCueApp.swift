@@ -19,50 +19,54 @@ struct LogicVideoCueApp: App {
         .defaultSize(width: 1_280, height: 800)
         .commands {
             CommandGroup(replacing: .newItem) {
-                Button("新增專案") {
+                Button("New Project") {
                     model.newProject()
                 }
                 .keyboardShortcut("n")
 
-                Button("開啟專案…") {
+                Button("Open Project…") {
                     model.openProject()
                 }
                 .keyboardShortcut("o")
 
                 Divider()
 
-                Button("加入影片…") {
+                Button("Add Videos…") {
                     model.importVideos()
                 }
                 .keyboardShortcut("o", modifiers: [.command, .shift])
             }
 
             CommandGroup(replacing: .saveItem) {
-                Button("儲存") {
+                Button("Save") {
                     model.saveProject()
                 }
                 .keyboardShortcut("s")
 
-                Button("另存新檔…") {
+                Button("Save As…") {
                     model.saveProject(saveAs: true)
                 }
                 .keyboardShortcut("s", modifiers: [.command, .shift])
             }
 
-            CommandMenu("影片") {
-                Button(model.isPreviewPlaying ? "停止本機預覽" : "開始本機預覽") {
+            CommandMenu("Videos") {
+                Button(
+                    model.isPreviewPlaying
+                        ? String(localized: "Stop Local Preview")
+                        : String(localized: "Start Local Preview")
+                ) {
                     model.togglePreview()
                 }
                 .keyboardShortcut(.space, modifiers: [])
 
                 Divider()
 
-                Button("開啟輸出視窗") {
+                Button("Show Video Output") {
                     model.showVideoOutput()
                 }
                 .keyboardShortcut("v", modifiers: [.command, .shift])
 
-                Button("輸出視窗全螢幕") {
+                Button("Full Screen Video Output") {
                     model.toggleOutputFullScreen()
                 }
                 .keyboardShortcut("f", modifiers: [.command, .control])

@@ -26,6 +26,14 @@ Build/LogicVideoCue.app
 
 如果 macOS 第一次阻擋開啟，請在 Finder 對 App 按右鍵 →「打開」。
 
+### 介面語言
+
+Logic Video Cue 與內嵌 Link AU 支援繁體中文和英文，預設跟隨 macOS。若只想
+切換獨立 App，可前往「系統設定 → 一般 → 語言與地區 → 應用程式」，加入
+Logic Video Cue 並選擇語言，再重新開啟 App。載入於 Logic 內的 Link AU
+通常跟隨 Logic／macOS 的語言，變更後請重新啟動 Logic。語言設定不會更改
+`.lvcue` 內容或同步設定。
+
 ## 二、第一次加入 Logic Video Cue Link AU
 
 1. 先結束 Logic。

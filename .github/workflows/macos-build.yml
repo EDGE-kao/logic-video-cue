@@ -1,0 +1,39 @@
+name: macOS Xcode Build
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build App and AUv3
+    runs-on: macos-15
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Run portable checks
+        run: python3 Tests/verify_project.py
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: Build Logic Video Cue
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project LogicVideoCue.xcodeproj \
+            -scheme LogicVideoCue \
+            -configuration Debug \
+            -destination 'platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/LogicVideoCueDerivedData" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            clean build

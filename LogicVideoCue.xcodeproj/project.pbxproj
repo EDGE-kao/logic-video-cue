@@ -24,6 +24,8 @@
 		B20000000000000000000005 /* AUBridgeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20000000000000000000002 /* AUBridgeProtocol.swift */; };
 		B20000000000000000000006 /* LogicVideoCue-AppIcon-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = C20000000000000000000007 /* LogicVideoCue-AppIcon-1024.png */; };
 		B20000000000000000000007 /* LogicVideoCueLink.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C20000000000000000000008 /* LogicVideoCueLink.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B30000000000000000000001 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C30000000000000000000001 /* Localizable.xcstrings */; };
+		B30000000000000000000002 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C30000000000000000000001 /* Localizable.xcstrings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +73,7 @@
 		C20000000000000000000006 /* LogicVideoCueAU.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LogicVideoCueAU.entitlements; sourceTree = "<group>"; };
 		C20000000000000000000007 /* LogicVideoCue-AppIcon-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "../Artwork/LogicVideoCue-AppIcon-1024.png"; sourceTree = "<group>"; };
 		C20000000000000000000008 /* LogicVideoCueLink.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LogicVideoCueLink.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		C30000000000000000000001 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				C20000000000000000000002 /* AUBridgeProtocol.swift */,
+				C30000000000000000000001 /* Localizable.xcstrings */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -232,6 +236,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B1000000000000000000000A /* Assets.xcassets in Resources */,
+				B30000000000000000000001 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,6 +245,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B20000000000000000000006 /* LogicVideoCue-AppIcon-1024.png in Resources */,
+				B30000000000000000000002 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -406,7 +412,7 @@
 				CODE_SIGNING_REQUIRED = YES;
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				ENABLE_APP_SANDBOX = NO;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LogicVideoCue/Info.plist;
@@ -414,7 +420,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.4.0;
+				MARKETING_VERSION = 0.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.local.logicvideocue;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -432,7 +438,7 @@
 				CODE_SIGNING_REQUIRED = YES;
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				ENABLE_APP_SANDBOX = NO;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LogicVideoCue/Info.plist;
@@ -440,7 +446,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.4.0;
+				MARKETING_VERSION = 0.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.local.logicvideocue;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -459,7 +465,7 @@
 				CODE_SIGNING_ALLOWED = YES;
 				CODE_SIGNING_REQUIRED = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				ENABLE_APP_SANDBOX = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LogicVideoCueAU/Info.plist;
@@ -468,7 +474,7 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				MARKETING_VERSION = 0.4.0;
+				MARKETING_VERSION = 0.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.local.logicvideocue.au;
 				PRODUCT_MODULE_NAME = LogicVideoCueAU;
 				PRODUCT_NAME = LogicVideoCueLink;
@@ -488,7 +494,7 @@
 				CODE_SIGNING_ALLOWED = YES;
 				CODE_SIGNING_REQUIRED = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				ENABLE_APP_SANDBOX = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LogicVideoCueAU/Info.plist;
@@ -497,7 +503,7 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				MARKETING_VERSION = 0.4.0;
+				MARKETING_VERSION = 0.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.local.logicvideocue.au;
 				PRODUCT_MODULE_NAME = LogicVideoCueAU;
 				PRODUCT_NAME = LogicVideoCueLink;
