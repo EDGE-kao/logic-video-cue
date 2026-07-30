@@ -5,7 +5,7 @@
 
 An open-source multi-video sync player for Logic Pro on macOS
 
-[Getting Started](Docs/Getting-Started.md) · [Contributing](CONTRIBUTING.md) · [Support](SUPPORT.md)
+[Getting Started](Docs/Getting-Started.md) · [Contributing](CONTRIBUTING.md) · [Support](SUPPORT.md) · [Support on Ko-fi](https://ko-fi.com/edgekao)
 
 **Original creator & maintainer: [Kao Ko Feng](AUTHORS.md)**
 </div>
@@ -129,6 +129,13 @@ A complete build still requires macOS and Xcode.
   Catalog shared by the app and AU.
 - `Docs/`: installation, Logic setup, and maintainer publishing guidance.
 - `Tests/`: portable structural checks that do not require Xcode.
+
+## Support the project
+
+If Logic Video Cue saves you time, you can support the original creator and
+ongoing development on [Ko-fi](https://ko-fi.com/edgekao). Sponsorship is
+entirely optional; the source code remains available under the GPL and all
+features remain available without payment.
 
 ## Contributing and support
 
