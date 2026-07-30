@@ -40,7 +40,7 @@ single long movie.
 - Logic Pro 11/12. Older versions may work through conventional MTC/MMC setup,
   but are not fully tested.
 
-The current app interface is primarily in Traditional Chinese.
+The app interface is currently available in Traditional Chinese only.
 
 ## Build from source
 
