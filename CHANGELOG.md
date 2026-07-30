@@ -7,25 +7,25 @@ This project uses semantic versioning for public releases.
 
 ## [Unreleased]
 
+### Planned
+
+- Community testing across more Logic Pro and macOS versions.
+- Optional signed and notarized release workflow.
+
+## [0.5.0] - 2026-07-30
+
 ### Added
 
 - Native English and Traditional Chinese localization for the standalone app
   and embedded Link AU.
 - Shared Xcode String Catalog with automatic macOS and per-app language
   selection.
+- macOS GitHub Actions build verification for the app and embedded AUv3.
 
 ### Changed
 
-- Adopted `GPL-3.0-or-later` for the first public source release.
-- Added permanent original-creator credit for Kao Ko Feng and a separate
-  project-name and artwork policy.
-- Prepared app and AU version 0.5.0 while preserving compatibility with
-  existing `.lvcue` arrangement values.
-
-### Planned
-
-- Community testing across more Logic Pro and macOS versions.
-- Optional signed and notarized release workflow.
+- Updated the app and AU to version 0.5.0 while preserving compatibility with
+  existing v0.4.0 `.lvcue` arrangement values.
 
 ## [0.4.0] - 2026-07-29
 
@@ -43,6 +43,9 @@ This project uses semantic versioning for public releases.
 - Continuous AVPlayer clock during normal playback to reduce audio and video
   interruptions.
 - Output-window always-on-top behavior across macOS Spaces.
+- Adopted `GPL-3.0-or-later` for the first public source release.
+- Added permanent original-creator credit for Kao Ko Feng and a separate
+  project-name and artwork policy.
 
 ### Fixed
 
