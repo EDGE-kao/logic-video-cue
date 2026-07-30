@@ -93,36 +93,51 @@ final class AppModel: ObservableObject {
         SMPTETimecode.format(seconds: project.baseTime, at: project.timelineFrameRate)
     }
 
+    var projectDisplayName: String {
+        project.name == "Untitled"
+            ? String(localized: "Untitled")
+            : project.name
+    }
+
     var auBridgeStatusText: String {
         guard let presence = bridgeManager.preferredBridge(
             for: project.projectID
         ) else {
-            return "尚未偵測到 Link AU"
+            return String(localized: "Link AU not detected")
         }
 
         if presence.envelope.projectID == project.projectID {
-            return "已連結目前 Cue 專案"
+            return String(localized: "Linked to the current cue project")
         }
         if presence.envelope.projectID == nil {
-            return "Link AU 已連線，尚未連結"
+            return String(localized: "Link AU connected, not yet linked")
         }
-        return "Link AU 已連結其他 Cue"
+        return String(localized: "Link AU is linked to another cue")
     }
 
     var auBridgeDetailText: String {
         guard let presence = bridgeManager.preferredBridge(
             for: project.projectID
         ) else {
-            return "請在 Logic 的 Audio FX 插入一次 Logic Video Cue: Link。"
+            return String(
+                localized: "Insert Logic Video Cue: Link once in Logic's Audio FX."
+            )
         }
 
         if presence.envelope.projectID == project.projectID {
-            return "Logic 開啟這個專案時，會自動要求 App 載入此 Cue。"
+            return String(
+                localized: "When Logic opens this project, it will ask the app to load this cue automatically."
+            )
         }
         if let name = presence.envelope.projectName {
-            return "目前 AU 記住的是「\(name)」，按下方按鈕可改為目前 Cue。"
+            return String(
+                format: String(
+                    localized: "The AU currently remembers “%@”. Use the button below to link the current cue."
+                ),
+                name
+            )
         }
-        return "先儲存目前 Cue，再建立一次連結。"
+        return String(localized: "Save the current cue before creating a link.")
     }
 
     var auBridgeIsConnected: Bool {
@@ -137,8 +152,8 @@ final class AppModel: ObservableObject {
 
     func importVideos() {
         let panel = NSOpenPanel()
-        panel.title = "加入短影片"
-        panel.prompt = "加入"
+        panel.title = String(localized: "Add Short Videos")
+        panel.prompt = String(localized: "Add")
         panel.allowedContentTypes = [.movie]
         panel.allowsMultipleSelection = true
         panel.canChooseDirectories = false
@@ -153,8 +168,10 @@ final class AppModel: ObservableObject {
 
         guard !movieURLs.isEmpty else {
             alert = UserAlert(
-                title: "沒有可加入的影片",
-                message: "請拖入 MOV、MP4 或其他 macOS 可播放的影片檔案。"
+                title: String(localized: "No Videos to Add"),
+                message: String(
+                    localized: "Drop MOV, MP4, or another video format playable by macOS."
+                )
             )
             return false
         }
@@ -163,8 +180,10 @@ final class AppModel: ObservableObject {
 
         if movieURLs.count != urls.count {
             alert = UserAlert(
-                title: "已略過非影片檔案",
-                message: "可播放的影片會照常加入；其他檔案沒有匯入。"
+                title: String(localized: "Non-Video Files Skipped"),
+                message: String(
+                    localized: "Playable videos were added; other files were not imported."
+                )
             )
         }
 
@@ -201,8 +220,8 @@ final class AppModel: ObservableObject {
         }
 
         let panel = NSOpenPanel()
-        panel.title = "替換影片並保留 Timecode"
-        panel.prompt = "替換"
+        panel.title = String(localized: "Replace Video and Preserve Timecode")
+        panel.prompt = String(localized: "Replace")
         panel.allowedContentTypes = [.movie]
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = false
@@ -222,7 +241,10 @@ final class AppModel: ObservableObject {
                 project.sortClips()
                 seekLocally(to: replacement.timelineStart)
             } catch {
-                showError(title: "無法替換影片", error: error)
+                showError(
+                    title: String(localized: "Could Not Replace Video"),
+                    error: error
+                )
             }
         }
     }
@@ -363,8 +385,8 @@ final class AppModel: ObservableObject {
 
     func openProject() {
         let panel = NSOpenPanel()
-        panel.title = "開啟 Logic Video Cue 專案"
-        panel.prompt = "開啟"
+        panel.title = String(localized: "Open Logic Video Cue Project")
+        panel.prompt = String(localized: "Open")
         panel.allowedContentTypes = [.logicVideoCueProject, .json]
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = false
@@ -392,7 +414,10 @@ final class AppModel: ObservableObject {
             hasUnsavedChanges = false
             return true
         } catch {
-            showError(title: "無法開啟專案", error: error)
+            showError(
+                title: String(localized: "Could Not Open Project"),
+                error: error
+            )
             return false
         }
     }
@@ -403,8 +428,8 @@ final class AppModel: ObservableObject {
 
         if saveAs || destination == nil {
             let panel = NSSavePanel()
-            panel.title = "儲存 Logic Video Cue 專案"
-            panel.prompt = "儲存"
+            panel.title = String(localized: "Save Logic Video Cue Project")
+            panel.prompt = String(localized: "Save")
             panel.allowedContentTypes = [.logicVideoCueProject]
             panel.canCreateDirectories = true
             panel.nameFieldStringValue = "\(project.name == "Untitled" ? "LogicVideoCue" : project.name).lvcue"
@@ -440,7 +465,10 @@ final class AppModel: ObservableObject {
             }
             return true
         } catch {
-            showError(title: "無法儲存專案", error: error)
+            showError(
+                title: String(localized: "Could Not Save Project"),
+                error: error
+            )
             return false
         }
     }
@@ -450,11 +478,10 @@ final class AppModel: ObservableObject {
             for: project.projectID
         ) else {
             alert = UserAlert(
-                title: "找不到 Logic Video Cue Link",
-                message:
-                    "請先在 Logic 的 Audio FX 插入 "
-                    + "Audio Units → Logic Video Cue → Link，"
-                    + "並保持 Logic 開啟。"
+                title: String(localized: "Logic Video Cue Link Not Found"),
+                message: String(
+                    localized: "Insert Audio Units → Logic Video Cue → Link in Logic's Audio FX, and keep Logic open."
+                )
             )
             return
         }
@@ -471,11 +498,13 @@ final class AppModel: ObservableObject {
         )
 
         alert = UserAlert(
-            title: "Cue 連結已送到 Logic",
-            message:
-                "請回到 Logic 按 Command-S 儲存一次。"
-                + "之後開啟這個 Logic 專案時，"
-                + "Video Cue 就會自動載入「\(project.name)」。"
+            title: String(localized: "Cue Link Sent to Logic"),
+            message: String(
+                format: String(
+                    localized: "Return to Logic and press Command-S once. The next time this Logic project opens, Video Cue will automatically load “%@”."
+                ),
+                project.name
+            )
         )
     }
 
@@ -552,7 +581,13 @@ final class AppModel: ObservableObject {
                     nextStart += clip.duration + max(0, project.gap)
                 }
             } catch {
-                failures.append("\(url.lastPathComponent)：\(error.localizedDescription)")
+                failures.append(
+                    String(
+                        format: String(localized: "%@: %@"),
+                        url.lastPathComponent,
+                        error.localizedDescription
+                    )
+                )
             }
         }
 
@@ -569,7 +604,7 @@ final class AppModel: ObservableObject {
 
         if !failures.isEmpty {
             alert = UserAlert(
-                title: "部分影片無法加入",
+                title: String(localized: "Some Videos Could Not Be Added"),
                 message: failures.joined(separator: "\n")
             )
         }
@@ -584,7 +619,11 @@ final class AppModel: ObservableObject {
             throw NSError(
                 domain: "LogicVideoCue",
                 code: 1,
-                userInfo: [NSLocalizedDescriptionKey: "檔案中沒有可播放的影片軌"]
+                userInfo: [
+                    NSLocalizedDescriptionKey: String(
+                        localized: "The file contains no playable video track."
+                    )
+                ]
             )
         }
 
@@ -598,7 +637,11 @@ final class AppModel: ObservableObject {
             throw NSError(
                 domain: "LogicVideoCue",
                 code: 2,
-                userInfo: [NSLocalizedDescriptionKey: "無法讀取影片長度"]
+                userInfo: [
+                    NSLocalizedDescriptionKey: String(
+                        localized: "Could not read the video duration."
+                    )
+                ]
             )
         }
 
@@ -688,10 +731,10 @@ final class AppModel: ObservableObject {
             if pendingAutomaticProject?.projectID != linkedProjectID {
                 pendingAutomaticProject = envelope
                 alert = UserAlert(
-                    title: "Logic 要開啟另一個 Cue",
-                    message:
-                        "目前 Cue 尚未儲存。請先按 Command-S，"
-                        + "儲存完成後會載入 Logic 專案所連結的 Cue。"
+                    title: String(localized: "Logic Wants to Open Another Cue"),
+                    message: String(
+                        localized: "The current cue has unsaved changes. Press Command-S first; after it is saved, the cue linked to the Logic project will load."
+                    )
                 )
             }
             return
@@ -701,10 +744,10 @@ final class AppModel: ObservableObject {
               FileManager.default.fileExists(atPath: url.path) else {
             failedAutomaticProjectIDs.insert(linkedProjectID)
             alert = UserAlert(
-                title: "找不到 Logic 連結的 Cue",
-                message:
-                    "原本的 .lvcue 可能已被移動或刪除。"
-                    + "請手動開啟正確的 Cue，再按「連結目前 Cue 專案」。"
+                title: String(localized: "Cue Linked by Logic Not Found"),
+                message: String(
+                    localized: "The original .lvcue may have been moved or deleted. Open the correct cue manually, then choose “Link Current Cue Project”."
+                )
             )
             return
         }

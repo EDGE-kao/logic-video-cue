@@ -125,7 +125,7 @@ final class OutputWindowController: NSWindowController, NSWindowDelegate {
             backing: .buffered,
             defer: false
         )
-        panel.title = "Logic Video Cue — Video Output"
+        panel.title = String(localized: "Logic Video Cue — Video Output")
         panel.contentView = outputContentView
         panel.backgroundColor = .black
         panel.minSize = NSSize(width: 480, height: 270)

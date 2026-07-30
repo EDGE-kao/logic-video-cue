@@ -176,6 +176,15 @@ enum ArrangementMode: String, CaseIterable, Codable, Identifiable, Sendable {
     case backToBack = "首尾相接"
 
     var id: String { rawValue }
+
+    var localizedName: String {
+        switch self {
+        case .fixedInterval:
+            String(localized: "Fixed interval")
+        case .backToBack:
+            String(localized: "Back-to-back")
+        }
+    }
 }
 
 struct CueProject: Codable, Sendable {

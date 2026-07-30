@@ -33,6 +33,7 @@ SCHEME = (
 )
 ASSET_CATALOG = SOURCE / "Assets.xcassets"
 APP_ICON_SET = ASSET_CATALOG / "AppIcon.appiconset"
+LOCALIZATIONS = SHARED / "Localizable.xcstrings"
 
 
 def check(condition: bool, message: str) -> None:
@@ -130,6 +131,98 @@ def validate_xcode_sources() -> None:
     check(
         len(definition_ids) == len(set(definition_ids)),
         "Duplicate PBX object identifiers found",
+    )
+
+
+def validate_localization_resources() -> None:
+    project_text = PBXPROJ.read_text(encoding="utf-8")
+    with LOCALIZATIONS.open(encoding="utf-8") as handle:
+        catalog = json.load(handle)
+
+    check(catalog["sourceLanguage"] == "en", "Catalog source language must be English")
+    check(catalog["version"] == "1.0", "Unsupported String Catalog version")
+
+    strings = catalog["strings"]
+    check(len(strings) >= 90, "String Catalog is unexpectedly incomplete")
+
+    for key, entry in strings.items():
+        translation = (
+            entry.get("localizations", {})
+            .get("zh-Hant", {})
+            .get("stringUnit", {})
+        )
+        check(
+            translation.get("state") == "translated"
+            and isinstance(translation.get("value"), str),
+            f"Missing Traditional Chinese translation: {key}",
+        )
+
+    for key in (
+        "Follow Logic",
+        "Logic Project Link",
+        "Link Current Cue Project",
+        "No video at the current position",
+        "Full Screen Video Output",
+        "This AU only links a Logic project to the standalone Logic Video Cue app. "
+        "It does not process or alter audio.",
+    ):
+        check(key in strings, f"String Catalog is missing key: {key}")
+
+    localization_patterns = (
+        r'String\(\s*localized:\s*"([^"]+)"',
+        r'localized\(\s*"([^"]+)"',
+        r'\b(?:Text|Button|Toggle|GroupBox|LabeledContent|Picker|Label|CommandMenu)'
+        r'\(\s*"([^"]+)"',
+        r'\.help\(\s*"([^"]+)"',
+    )
+    referenced_keys: set[str] = set()
+    for path in list(SOURCE.glob("*.swift")) + list(AU_SOURCE.glob("*.swift")):
+        source_text = path.read_text(encoding="utf-8")
+        for pattern in localization_patterns:
+            referenced_keys.update(re.findall(pattern, source_text, flags=re.DOTALL))
+
+    ignored_literals = {"", "0", "2", "60", "01:00:00:00"}
+    missing_keys = sorted(referenced_keys - strings.keys() - ignored_literals)
+    check(
+        not missing_keys,
+        "User-facing source strings are missing from the catalog: "
+        + ", ".join(missing_keys),
+    )
+
+    check(
+        project_text.count("Localizable.xcstrings in Resources") == 4,
+        "String Catalog must be included in both App and AU resource phases",
+    )
+    check(
+        '"zh-Hant",' in project_text,
+        "Traditional Chinese is missing from Xcode known regions",
+    )
+    check(
+        project_text.count("MARKETING_VERSION = 0.5.0;") == 4,
+        "App and AU version must both be 0.5.0",
+    )
+    check(
+        project_text.count("CURRENT_PROJECT_VERSION = 10;") == 4,
+        "App and AU build number must both be 10",
+    )
+
+    models = (SOURCE / "Models.swift").read_text(encoding="utf-8")
+    check(
+        'case fixedInterval = "每隔固定時間"' in models
+        and 'case backToBack = "首尾相接"' in models,
+        "Persisted arrangement values changed and would break older .lvcue files",
+    )
+    check(
+        "var localizedName: String" in models,
+        "Arrangement modes do not expose localized display names",
+    )
+
+    au_view = (AU_SOURCE / "LogicVideoCueAUViewController.swift").read_text(
+        encoding="utf-8"
+    )
+    check(
+        "Bundle(for: Self.self)" in au_view,
+        "AU localization does not load from the extension bundle",
     )
 
 
@@ -485,7 +578,7 @@ def validate_audio_unit_bridge() -> None:
         check(token in app_model, f"App bridge integration is missing {token}")
 
     check(
-        'GroupBox("Logic 專案連結")' in content_view,
+        'GroupBox("Logic Project Link")' in content_view,
         "The App has no Logic link controls",
     )
 
@@ -536,6 +629,7 @@ def validate_open_source_repository() -> None:
         "Docs/Getting-Started.en.md",
         "Docs/Publishing.md",
         ".github/workflows/portable-checks.yml",
+        ".github/workflows/macos-build.yml",
         ".github/ISSUE_TEMPLATE/bug_report.yml",
         ".github/ISSUE_TEMPLATE/feature_request.yml",
         ".github/ISSUE_TEMPLATE/config.yml",
@@ -618,6 +712,7 @@ def validate_open_source_repository() -> None:
         ".pbxproj",
         ".plist",
         ".swift",
+        ".xcstrings",
         ".yaml",
         ".yml",
     }
@@ -646,6 +741,7 @@ def main() -> int:
     checks = [
         validate_plists_and_xml,
         validate_xcode_sources,
+        validate_localization_resources,
         validate_swift_delimiters,
         validate_timecode_reference_values,
         validate_expected_midi_coverage,

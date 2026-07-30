@@ -10,6 +10,15 @@
 The app contains the `Logic Video Cue: Link` AUv3 extension. Do not extract or
 move the `.appex` separately.
 
+### Interface language
+
+The standalone app and Link AU support English and Traditional Chinese and
+follow macOS by default. To change only the standalone app, open
+`System Settings → General → Language & Region → Applications`, add Logic
+Video Cue, choose a language, and relaunch the app. The Link AU runs inside
+Logic and normally follows the Logic/macOS language; restart Logic after
+changing it. This does not change `.lvcue` data or synchronization settings.
+
 ## 2. Add the Link AU
 
 Create an unused Aux channel in Logic and insert:

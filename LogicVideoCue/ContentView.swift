@@ -60,7 +60,7 @@ struct ContentView: View {
             Alert(
                 title: Text(alert.title),
                 message: Text(alert.message),
-                dismissButton: .default(Text("好"))
+                dismissButton: .default(Text("OK"))
             )
         }
     }
@@ -85,9 +85,9 @@ private struct DropImportOverlay: View {
                 VStack(spacing: 12) {
                     Image(systemName: "film.stack.fill")
                         .font(.system(size: 42, weight: .semibold))
-                    Text("放開以加入影片")
+                    Text("Drop to Add Videos")
                         .font(.title2.bold())
-                    Text("支援一次拖入多支 MOV／MP4")
+                    Text("Add multiple MOV/MP4 files at once")
                         .foregroundStyle(.secondary)
                 }
                 .foregroundStyle(Color.accentColor)
@@ -101,7 +101,7 @@ private struct HeaderView: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            Text(model.project.name)
+            Text(model.projectDisplayName)
                 .font(.headline)
                 .lineLimit(1)
 
@@ -109,19 +109,19 @@ private struct HeaderView: View {
                 Button(action: model.newProject) {
                     Image(systemName: "doc")
                 }
-                .help("新增專案")
+                .help("New Project")
 
                 Button(action: model.openProject) {
                     Image(systemName: "folder")
                 }
-                .help("開啟專案")
+                .help("Open Project")
 
                 Button {
                     model.saveProject()
                 } label: {
                     Image(systemName: "square.and.arrow.down")
                 }
-                .help("儲存專案")
+                .help("Save Project")
             }
             .buttonStyle(.borderless)
 
@@ -133,7 +133,7 @@ private struct HeaderView: View {
 
             Spacer()
 
-            Toggle("跟隨 Logic", isOn: $model.syncEnabled)
+            Toggle("Follow Logic", isOn: $model.syncEnabled)
                 .toggleStyle(.switch)
                 .onChange(of: model.syncEnabled) {
                     model.updateSyncEnabled()
@@ -161,7 +161,7 @@ private struct SyncStatusView: View {
                     .lineLimit(1)
 
                 if let rate = syncManager.detectedFrameRate {
-                    Text("MTC \(rate.displayName) fps")
+                    Text(verbatim: "MTC \(rate.displayName) fps")
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                 } else {
@@ -191,14 +191,14 @@ private struct ClipSidebarView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                Text("影片")
+                Text("Videos")
                     .font(.headline)
                 Spacer()
                 if model.isLoadingMedia {
                     ProgressView()
                         .controlSize(.small)
                 }
-                Text("\(model.project.clips.count)")
+                Text(verbatim: String(model.project.clips.count))
                     .foregroundStyle(.secondary)
             }
             .padding(12)
@@ -207,11 +207,11 @@ private struct ClipSidebarView: View {
 
             if model.project.clips.isEmpty {
                 ContentUnavailableView {
-                    Label("尚未加入影片", systemImage: "film.stack")
+                    Label("No Videos Added", systemImage: "film.stack")
                 } description: {
-                    Text("可按下方按鈕，或直接從 Finder 拖入多支 MOV／MP4")
+                    Text("Use the button below, or drag multiple MOV/MP4 files directly from Finder.")
                 } actions: {
-                    Button("加入影片", action: model.importVideos)
+                    Button("Add Videos", action: model.importVideos)
                 }
             } else {
                 List(selection: $model.selectedClipID) {
@@ -219,15 +219,15 @@ private struct ClipSidebarView: View {
                         ClipListRow(clip: clip)
                             .tag(clip.id)
                             .contextMenu {
-                                Button("定位至影片開頭") {
+                                Button("Locate to Video Start") {
                                     model.selectAndLocate(clip.id)
                                 }
-                                Button("替換影片…") {
+                                Button("Replace Video…") {
                                     model.selectedClipID = clip.id
                                     model.replaceSelectedVideo()
                                 }
                                 Divider()
-                                Button("移除", role: .destructive) {
+                                Button("Remove", role: .destructive) {
                                     model.selectedClipID = clip.id
                                     model.removeSelectedVideo()
                                 }
@@ -247,19 +247,19 @@ private struct ClipSidebarView: View {
                 Button(action: model.importVideos) {
                     Image(systemName: "plus")
                 }
-                .help("加入多支影片")
+                .help("Add Multiple Videos")
 
                 Button(action: model.replaceSelectedVideo) {
                     Image(systemName: "arrow.triangle.2.circlepath")
                 }
                 .disabled(model.selectedClipID == nil)
-                .help("替換影片但保留 Timecode")
+                .help("Replace Video and Preserve Timecode")
 
                 Button(action: model.removeSelectedVideo) {
                     Image(systemName: "minus")
                 }
                 .disabled(model.selectedClipID == nil)
-                .help("移除影片")
+                .help("Remove Video")
 
                 Spacer()
 
@@ -269,7 +269,7 @@ private struct ClipSidebarView: View {
                     Image(systemName: "arrow.up")
                 }
                 .disabled(model.selectedClipID == nil)
-                .help("向前移動")
+                .help("Move Earlier")
 
                 Button {
                     model.moveSelectedClip(by: 1)
@@ -277,7 +277,7 @@ private struct ClipSidebarView: View {
                     Image(systemName: "arrow.down")
                 }
                 .disabled(model.selectedClipID == nil)
-                .help("向後移動")
+                .help("Move Later")
             }
             .buttonStyle(.borderless)
             .padding(10)
@@ -330,7 +330,9 @@ private struct PlayerControlsView: View {
         HStack(spacing: 12) {
             Button(action: model.togglePreview) {
                 Label(
-                    model.isPreviewPlaying ? "停止預覽" : "本機預覽",
+                    model.isPreviewPlaying
+                        ? String(localized: "Stop Preview")
+                        : String(localized: "Local Preview"),
                     systemImage: model.isPreviewPlaying ? "stop.fill" : "play.fill"
                 )
             }
@@ -339,30 +341,30 @@ private struct PlayerControlsView: View {
                 Button {
                     model.selectAndLocate(selected)
                 } label: {
-                    Label("定位片頭", systemImage: "backward.end.fill")
+                    Label("Locate Start", systemImage: "backward.end.fill")
                 }
             }
 
             Spacer()
 
-            Toggle("影片原音靜音", isOn: $model.project.videoAudioMuted)
+            Toggle("Mute Video Audio", isOn: $model.project.videoAudioMuted)
                 .onChange(of: model.project.videoAudioMuted) {
                     model.updateVideoAudioMute()
                 }
 
-            Toggle("輸出視窗置頂", isOn: $model.alwaysOnTop)
+            Toggle("Keep Output Window on Top", isOn: $model.alwaysOnTop)
                 .onChange(of: model.alwaysOnTop) {
                     model.updateAlwaysOnTop()
                 }
 
             Button(action: model.showVideoOutput) {
-                Label("輸出視窗", systemImage: "macwindow.on.rectangle")
+                Label("Video Output", systemImage: "macwindow.on.rectangle")
             }
 
             Button(action: model.toggleOutputFullScreen) {
                 Image(systemName: "arrow.up.left.and.arrow.down.right")
             }
-            .help("輸出視窗全螢幕")
+            .help("Full Screen Video Output")
         }
     }
 }
@@ -379,7 +381,7 @@ private struct CueStripView: View {
                 RoundedRectangle(cornerRadius: 8)
                     .fill(Color.secondary.opacity(0.08))
                     .overlay {
-                        Text("加入影片後，每支影片會保持為獨立 Cue")
+                        Text("After adding videos, each video remains an independent cue.")
                             .foregroundStyle(.secondary)
                     }
             } else {
@@ -403,7 +405,11 @@ private struct CueStripView: View {
                                     ))
                                     .font(.system(.caption, design: .monospaced))
 
-                                    Text(String(format: "%.2f 秒 · %.2f fps", clip.duration, clip.nominalFrameRate))
+                                    Text(String(
+                                        format: String(localized: "%.2f sec · %.2f fps"),
+                                        clip.duration,
+                                        clip.nominalFrameRate
+                                    ))
                                         .font(.caption2)
                                         .foregroundStyle(.secondary)
                                 }
@@ -461,7 +467,7 @@ private struct InspectorPanelView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
-                GroupBox("專案") {
+                GroupBox("Project") {
                     VStack(alignment: .leading, spacing: 10) {
                         LabeledContent("Timeline fps") {
                             Picker("", selection: $model.project.timelineFrameRate) {
@@ -473,7 +479,7 @@ private struct InspectorPanelView: View {
                             .frame(width: 110)
                         }
 
-                        LabeledContent("起始 Timecode") {
+                        LabeledContent("Start Timecode") {
                             TextField("01:00:00:00", text: $baseTimeEntry)
                                 .font(.system(.body, design: .monospaced))
                                 .multilineTextAlignment(.trailing)
@@ -482,19 +488,19 @@ private struct InspectorPanelView: View {
                         }
 
                         if baseTimeIsInvalid {
-                            Text("Timecode 格式不正確")
+                            Text("Invalid timecode format")
                                 .font(.caption)
                                 .foregroundStyle(.red)
                         }
 
-                        Picker("排列方式", selection: $model.project.arrangementMode) {
+                        Picker("Arrangement", selection: $model.project.arrangementMode) {
                             ForEach(ArrangementMode.allCases) { mode in
-                                Text(mode.rawValue).tag(mode)
+                                Text(mode.localizedName).tag(mode)
                             }
                         }
 
                         if model.project.arrangementMode == .fixedInterval {
-                            LabeledContent("固定間隔") {
+                            LabeledContent("Interval") {
                                 TextField(
                                     "60",
                                     value: $model.project.fixedInterval,
@@ -502,10 +508,10 @@ private struct InspectorPanelView: View {
                                 )
                                 .multilineTextAlignment(.trailing)
                                 .frame(width: 72)
-                                Text("秒")
+                                Text("sec")
                             }
                         } else {
-                            LabeledContent("影片間空白") {
+                            LabeledContent("Gap Between Videos") {
                                 TextField(
                                     "2",
                                     value: $model.project.gap,
@@ -513,16 +519,16 @@ private struct InspectorPanelView: View {
                                 )
                                 .multilineTextAlignment(.trailing)
                                 .frame(width: 72)
-                                Text("秒")
+                                Text("sec")
                             }
                         }
 
-                        Button("重新自動排列", action: model.autoArrange)
+                        Button("Auto Arrange Again", action: model.autoArrange)
                             .frame(maxWidth: .infinity)
 
                         Divider()
 
-                        LabeledContent("同步補償") {
+                        LabeledContent("Sync Offset") {
                             TextField(
                                 "0",
                                 value: syncOffsetMilliseconds,
@@ -533,14 +539,14 @@ private struct InspectorPanelView: View {
                             Text("ms")
                         }
 
-                        Text("正值讓影片提前，負值讓影片延後。")
+                        Text("Positive values advance video; negative values delay it.")
                             .font(.caption2)
                             .foregroundStyle(.secondary)
                     }
                     .padding(7)
                 }
 
-                GroupBox("Logic 專案連結") {
+                GroupBox("Logic Project Link") {
                     VStack(alignment: .leading, spacing: 10) {
                         HStack(spacing: 8) {
                             Circle()
@@ -561,7 +567,7 @@ private struct InspectorPanelView: View {
 
                         HStack {
                             Button(
-                                "連結目前 Cue 專案",
+                                "Link Current Cue Project",
                                 action: model.linkCurrentProjectToAU
                             )
                             .disabled(!model.auBridgeIsConnected)
@@ -571,12 +577,12 @@ private struct InspectorPanelView: View {
                             } label: {
                                 Image(systemName: "arrow.clockwise")
                             }
-                            .help("重新偵測 Logic Link AU")
+                            .help("Detect Logic Link AU Again")
                         }
 
                         if model.auBridgeIsLinkedToCurrentProject {
                             Label(
-                                "第一次連結後，記得回 Logic 按 Command-S。",
+                                "After the first link, return to Logic and press Command-S.",
                                 systemImage: "checkmark.circle.fill"
                             )
                             .font(.caption2)
@@ -586,14 +592,14 @@ private struct InspectorPanelView: View {
                     .padding(7)
                 }
 
-                GroupBox("選取的影片") {
+                GroupBox("Selected Video") {
                     if let clip = model.selectedClip {
                         VStack(alignment: .leading, spacing: 10) {
                             Text(clip.displayName)
                                 .font(.headline)
                                 .textSelection(.enabled)
 
-                            LabeledContent("開始") {
+                            LabeledContent("Start") {
                                 TextField("01:00:00:00", text: $clipStartEntry)
                                     .font(.system(.body, design: .monospaced))
                                     .multilineTextAlignment(.trailing)
@@ -602,19 +608,22 @@ private struct InspectorPanelView: View {
                             }
 
                             if clipStartIsInvalid {
-                                Text("Timecode 格式不正確")
+                                Text("Invalid timecode format")
                                     .font(.caption)
                                     .foregroundStyle(.red)
                             }
 
-                            LabeledContent("長度") {
-                                Text(String(format: "%.3f 秒", clip.duration))
+                            LabeledContent("Duration") {
+                                Text(String(
+                                    format: String(localized: "%.3f sec"),
+                                    clip.duration
+                                ))
                             }
                             LabeledContent("Frame rate") {
                                 Text(String(format: "%.3f", clip.nominalFrameRate))
                             }
-                            LabeledContent("畫面") {
-                                Text("\(clip.width) × \(clip.height)")
+                            LabeledContent("Dimensions") {
+                                Text(verbatim: "\(clip.width) × \(clip.height)")
                             }
 
                             Text(clip.filePath)
@@ -624,19 +633,22 @@ private struct InspectorPanelView: View {
                                 .textSelection(.enabled)
 
                             if !clip.fileExists {
-                                Label("原始影片已移動或不存在", systemImage: "exclamationmark.triangle.fill")
+                                Label(
+                                    "The original video has moved or no longer exists.",
+                                    systemImage: "exclamationmark.triangle.fill"
+                                )
                                     .font(.caption)
                                     .foregroundStyle(.orange)
                             }
 
                             HStack {
-                                Button("替換…", action: model.replaceSelectedVideo)
-                                Button("移除", role: .destructive, action: model.removeSelectedVideo)
+                                Button("Replace…", action: model.replaceSelectedVideo)
+                                Button("Remove", role: .destructive, action: model.removeSelectedVideo)
                             }
                         }
                         .padding(7)
                     } else {
-                        Text("從左側選取一支影片")
+                        Text("Select a video from the sidebar.")
                             .foregroundStyle(.secondary)
                             .padding(7)
                     }

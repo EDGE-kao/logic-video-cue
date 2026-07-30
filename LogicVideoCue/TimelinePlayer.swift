@@ -11,8 +11,8 @@ final class TimelinePlayer: ObservableObject {
     let player = AVPlayer()
 
     @Published private(set) var activeClipID: UUID?
-    @Published private(set) var activeClipName = "目前位置沒有影片"
-    @Published private(set) var statusMessage = "等待影片"
+    @Published private(set) var activeClipName = String(localized: "No video at the current position")
+    @Published private(set) var statusMessage = String(localized: "Waiting for video")
 
     private var loadedClipID: UUID?
     private var seekGeneration = 0
@@ -111,13 +111,15 @@ final class TimelinePlayer: ObservableObject {
             }
         }
 
-        statusMessage = playing ? "跟隨 Logic 播放" : "已定位"
+        statusMessage = playing
+            ? String(localized: "Following Logic playback")
+            : String(localized: "Located")
     }
 
     func stop() {
         shouldPlay = false
         player.pause()
-        statusMessage = "已停止"
+        statusMessage = String(localized: "Stopped")
     }
 
     func clear() {
@@ -127,8 +129,8 @@ final class TimelinePlayer: ObservableObject {
         player.replaceCurrentItem(with: nil)
         loadedClipID = nil
         activeClipID = nil
-        activeClipName = "目前位置沒有影片"
-        statusMessage = "等待影片"
+        activeClipName = String(localized: "No video at the current position")
+        statusMessage = String(localized: "Waiting for video")
     }
 
     private func load(clip: CueClip, at localTime: Double, playing: Bool) {
@@ -140,7 +142,10 @@ final class TimelinePlayer: ObservableObject {
         lastHardResyncDate = nil
         loadedClipID = clip.id
         player.replaceCurrentItem(with: item)
-        statusMessage = "載入 \(clip.displayName)"
+        statusMessage = String(
+            format: String(localized: "Loading %@"),
+            clip.displayName
+        )
 
         seek(to: localTime, exact: !playing) { [weak self] in
             guard let self, self.loadedClipID == clip.id else { return }
@@ -149,7 +154,9 @@ final class TimelinePlayer: ObservableObject {
             } else {
                 self.player.pause()
             }
-            self.statusMessage = self.shouldPlay ? "跟隨 Logic 播放" : "已定位"
+            self.statusMessage = self.shouldPlay
+                ? String(localized: "Following Logic playback")
+                : String(localized: "Located")
         }
     }
 
@@ -186,8 +193,10 @@ final class TimelinePlayer: ObservableObject {
         }
         loadedClipID = nil
         activeClipID = nil
-        activeClipName = "目前位置沒有影片"
-        statusMessage = playing ? "播放位置位於影片間隔" : "目前位置沒有影片"
+        activeClipName = String(localized: "No video at the current position")
+        statusMessage = playing
+            ? String(localized: "Playback is in a gap between videos")
+            : String(localized: "No video at the current position")
     }
 
     private func showMissingFile(for clip: CueClip) {
@@ -197,7 +206,7 @@ final class TimelinePlayer: ObservableObject {
         loadedClipID = nil
         activeClipID = clip.id
         activeClipName = clip.displayName
-        statusMessage = "找不到影片檔，請重新連結"
+        statusMessage = String(localized: "Video file not found; please relink it")
     }
 
     private func cancelPendingSeeks() {

@@ -36,19 +36,21 @@ final class LogicVideoCueAUViewController:
 
         let subtitle = NSTextField(
             wrappingLabelWithString:
-                "這個 AU 只負責把 Logic 專案連結到獨立的 "
-                + "Logic Video Cue App，不會處理或改變聲音。"
+                localized(
+                    "This AU only links a Logic project to the standalone Logic Video Cue app. It does not process or alter audio."
+                )
         )
         subtitle.textColor = .secondaryLabelColor
 
         let instruction = NSTextField(
             wrappingLabelWithString:
-                "請先在主 App 儲存 .lvcue，再按「連結目前 Cue 專案」，"
-                + "最後回到 Logic 按 Command-S。之後不必再開啟這個外掛視窗。"
+                localized(
+                    "First save the .lvcue in the main app, choose “Link Current Cue Project”, then return to Logic and press Command-S. You do not need to reopen this plug-in window afterward."
+                )
         )
 
         let creator = NSTextField(
-            labelWithString: "Original creator: Kao Ko Feng"
+            labelWithString: localized("Original creator: Kao Ko Feng")
         )
         creator.font = .systemFont(ofSize: 11)
         creator.textColor = .tertiaryLabelColor
@@ -65,8 +67,8 @@ final class LogicVideoCueAUViewController:
         root.addSubview(textStack)
 
         NSLayoutConstraint.activate([
-            root.widthAnchor.constraint(greaterThanOrEqualToConstant: 460),
-            root.heightAnchor.constraint(greaterThanOrEqualToConstant: 190),
+            root.widthAnchor.constraint(greaterThanOrEqualToConstant: 520),
+            root.heightAnchor.constraint(greaterThanOrEqualToConstant: 210),
 
             iconView.leadingAnchor.constraint(
                 equalTo: root.leadingAnchor,
@@ -98,7 +100,17 @@ final class LogicVideoCueAUViewController:
         ])
 
         view = root
-        preferredContentSize = NSSize(width: 520, height: 210)
+        preferredContentSize = NSSize(width: 620, height: 230)
+    }
+
+    private func localized(_ key: String) -> String {
+        NSLocalizedString(
+            key,
+            tableName: nil,
+            bundle: Bundle(for: Self.self),
+            value: key,
+            comment: ""
+        )
     }
 
     func createAudioUnit(

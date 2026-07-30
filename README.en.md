@@ -26,6 +26,8 @@ single long movie.
 - The AU stores the `.lvcue` project link inside the Logic project.
 - Multi-file Finder drag and drop.
 - Fixed-interval or back-to-back cue arrangement.
+- Native English and Traditional Chinese UI, following the macOS or per-app
+  language setting.
 - Appending a clip preserves existing cue positions.
 - Replacing a clip preserves its timeline start.
 - MTC Quarter Frame/Full Frame and MMC Locate/Play/Pause/Stop.
@@ -40,7 +42,10 @@ single long movie.
 - Logic Pro 11/12. Older versions may work through conventional MTC/MMC setup,
   but are not fully tested.
 
-The app interface is currently available in Traditional Chinese only.
+The app interface supports English and Traditional Chinese and follows the
+macOS system language automatically. To change only Logic Video Cue, use
+`System Settings → General → Language & Region → Applications`; no in-app
+language switch is required.
 
 ## Build from source
 

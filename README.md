@@ -30,6 +30,7 @@ MIDI Time Code（MTC）與 MIDI Machine Control（MMC）跟隨播放、停止與
 - 獨立 macOS App，內嵌 `Logic Video Cue: Link` AUv3。
 - AU 連結狀態隨 Logic 專案儲存；再次開啟 Logic 時自動載入對應 `.lvcue`。
 - Finder 多檔拖放、固定間隔排列或首尾相接。
+- 原生繁體中文／英文介面，依 macOS 或個別 App 語言設定自動切換。
 - 追加影片不移動既有 Cue；替換影片保留原 Timecode。
 - MTC Quarter Frame／Full Frame 與 MMC Locate／Play／Pause／Stop。
 - 24、25、29.97 DF、30、50、60 fps Timeline 顯示。
@@ -43,7 +44,9 @@ MIDI Time Code（MTC）與 MIDI Machine Control（MMC）跟隨播放、停止與
 - Xcode 16 或相容版本（只在本機編譯時需要）。
 - Logic Pro 11／12；較舊版本可能可透過傳統 MTC／MMC 設定使用，但未完整測試。
 
-目前 App 介面僅提供繁體中文。
+App 介面支援繁體中文與英文，會依 macOS 系統語言自動切換。也可在
+「系統設定 → 一般 → 語言與地區 → 應用程式」只變更 Logic Video Cue 的語言；
+不需要在 App 內另外切換。
 
 ## 從原始碼開始
 
@@ -103,7 +106,7 @@ python3 Tests/verify_project.py
 
 - `LogicVideoCue/`：SwiftUI App、Cue 管理與 AVPlayer 播放。
 - `LogicVideoCueAU/`：零延遲音訊直通的 AUv3 Link。
-- `Shared/`：App 與 AU 共用的橋接協定。
+- `Shared/`：App 與 AU 共用的橋接協定與繁中／英文 String Catalog。
 - `Docs/`：安裝、Logic 設定與維護者發布指南。
 - `Tests/`：不依賴 Xcode 的可攜式結構檢查。
 

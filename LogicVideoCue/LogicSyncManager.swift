@@ -14,7 +14,7 @@ final class LogicSyncManager: ObservableObject {
     @Published private(set) var isLogicPlaying = false
     @Published private(set) var detectedFrameRate: MTCFrameRate?
     @Published private(set) var lastTimecodeSeconds = 0.0
-    @Published private(set) var statusMessage = "正在建立虛擬 MIDI Port…"
+    @Published private(set) var statusMessage = String(localized: "Creating virtual MIDI port…")
 
     var onMessage: ((LogicSyncMessage) -> Void)?
 
@@ -49,7 +49,10 @@ final class LogicSyncManager: ObservableObject {
         )
 
         guard clientStatus == noErr else {
-            statusMessage = "無法建立 CoreMIDI Client（錯誤 \(clientStatus)）"
+            statusMessage = String(
+                format: String(localized: "Could not create CoreMIDI client (error %d)"),
+                clientStatus
+            )
             return
         }
 
@@ -67,12 +70,15 @@ final class LogicSyncManager: ObservableObject {
         }
 
         guard destinationStatus == noErr else {
-            statusMessage = "無法建立虛擬 MIDI Port（錯誤 \(destinationStatus)）"
+            statusMessage = String(
+                format: String(localized: "Could not create virtual MIDI port (error %d)"),
+                destinationStatus
+            )
             return
         }
 
         portIsReady = true
-        statusMessage = "等待 Logic 傳送 MTC／MMC"
+        statusMessage = String(localized: "Waiting for Logic to send MTC/MMC")
     }
 
     private func receive(_ bytes: [UInt8]) {
@@ -80,7 +86,7 @@ final class LogicSyncManager: ObservableObject {
         guard !messages.isEmpty else { return }
 
         isReceiving = true
-        statusMessage = "已連接 Logic"
+        statusMessage = String(localized: "Connected to Logic")
 
         for message in messages {
             switch message {
