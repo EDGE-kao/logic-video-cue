@@ -43,7 +43,7 @@ MIDI Time Code（MTC）與 MIDI Machine Control（MMC）跟隨播放、停止與
 - Xcode 16 或相容版本（只在本機編譯時需要）。
 - Logic Pro 11／12；較舊版本可能可透過傳統 MTC／MMC 設定使用，但未完整測試。
 
-目前 App 介面以繁體中文為主。
+目前 App 介面僅提供繁體中文。
 
 ## 從原始碼開始
 
