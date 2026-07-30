@@ -93,11 +93,11 @@ frequently.
 ## 4. Create and link a cue project
 
 1. Drag one or more MOV/MP4 files from Finder into Logic Video Cue, or use the
-   Add Video button and select multiple files.
+   `Add Videos` button and select multiple files.
 2. Choose fixed-interval or back-to-back arrangement.
 3. The default start timecode is `01:00:00:00`.
-4. Use Auto Arrange if you want the app to position every cue according to the
-   current arrangement rule.
+4. Use `Auto Arrange Again` if you want the app to position every cue according
+   to the current arrangement rule.
 5. Create matching markers in Logic if useful for the session.
 6. Start Logic playback and confirm that the app status changes from orange to
    green.
@@ -124,13 +124,13 @@ AU window or manually locate the cue project again.
 ### Add a new clip
 
 1. Stop Logic.
-2. Drag the new video into the app or use the Add Video button.
+2. Drag the new video into the app or use the `Add Videos` button.
 3. The new cue is appended after the existing final cue; existing cue
    timecodes do not move.
 4. Select the new cue and edit its start timecode if it belongs elsewhere.
 
-Do not use Auto Arrange after manual spotting unless you intend to reposition
-every cue.
+Do not use `Auto Arrange Again` after manual spotting unless you intend to
+reposition every cue.
 
 ### Replace a revised clip
 
@@ -169,9 +169,9 @@ display, video codec, or audio device. Start with 10 ms steps, then refine in
 
 ## 9. Dual displays and Logic fullscreen
 
-1. Open the output window.
+1. Click `Video Output` to open the output window.
 2. Drag its title bar or the video image to move it to another display.
-3. Keep Always on Top enabled if required.
+3. Keep `Keep Output Window on Top` enabled if required.
 4. When Logic enters macOS fullscreen, the output window joins that fullscreen
    Space and restores its topmost position.
 5. The lower center of the output window displays the Logic timeline in
@@ -180,7 +180,7 @@ display, video codec, or audio device. Start with 10 ms steps, then refine in
 The output window can join all Spaces so it does not remain behind on another
 desktop. While an always-on-top output is active, the app temporarily switches
 to accessory mode and its Dock icon may disappear. Closing the output window
-or disabling Always on Top restores the normal Dock icon.
+or disabling `Keep Output Window on Top` restores the normal Dock icon.
 
 ## 10. Troubleshooting
 
