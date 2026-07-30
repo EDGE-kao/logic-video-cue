@@ -616,7 +616,6 @@ def validate_build_script() -> None:
 def validate_open_source_repository() -> None:
     required_files = (
         "README.md",
-        "README.en.md",
         "LICENSE",
         "AUTHORS.md",
         "TRADEMARKS.md",
@@ -625,8 +624,7 @@ def validate_open_source_repository() -> None:
         "CONTRIBUTING.md",
         "SECURITY.md",
         "SUPPORT.md",
-        "Docs/第一次安裝與Logic設定.md",
-        "Docs/Getting-Started.en.md",
+        "Docs/Getting-Started.md",
         "Docs/Publishing.md",
         ".github/workflows/portable-checks.yml",
         ".github/workflows/macos-build.yml",
@@ -651,11 +649,29 @@ def validate_open_source_repository() -> None:
         "**Original creator & maintainer: [Kao Ko Feng](AUTHORS.md)**",
         "[GNU General Public License v3.0 or later](LICENSE)",
         "[TRADEMARKS.md](TRADEMARKS.md)",
-        "Docs/第一次安裝與Logic設定.md",
-        "MIDI Time Code（MTC）",
-        "MIDI Machine Control（MMC）",
+        "Docs/Getting-Started.md",
+        "MIDI Time Code (MTC)",
+        "MIDI Machine Control (MMC)",
     ):
         check(token in readme, f"README is missing {token}")
+
+    public_docs = (
+        "README.md",
+        "AUTHORS.md",
+        "TRADEMARKS.md",
+        "CHANGELOG.md",
+        "CONTRIBUTING.md",
+        "SECURITY.md",
+        "SUPPORT.md",
+        "Docs/Getting-Started.md",
+        "Docs/Publishing.md",
+    )
+    for relative_path in public_docs:
+        document = (ROOT / relative_path).read_text(encoding="utf-8")
+        check(
+            re.search(r"[\u3400-\u9fff]", document) is None,
+            f"Public documentation must be English-only: {relative_path}",
+        )
 
     authors = (ROOT / "AUTHORS.md").read_text(encoding="utf-8")
     check(
