@@ -1,0 +1,78 @@
+name: Bug report
+description: 回報可穩定重現的錯誤
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        請勿上傳客戶影片、商業 Logic 專案、私人路徑或其他機密內容。
+
+  - type: input
+    id: version
+    attributes:
+      label: Logic Video Cue version
+      placeholder: v0.4.0 Build 9
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: macOS、Logic Pro、Xcode、Mac 型號／晶片
+      placeholder: macOS 15.x, Logic Pro 11.x, Xcode 16.x, Apple Silicon
+    validations:
+      required: true
+
+  - type: textarea
+    id: media
+    attributes:
+      label: Reference media
+      description: 格式、codec、解析度、frame rate、是否含原音
+      placeholder: MOV, ProRes Proxy, 1920x1080, 29.97 fps, audio muted
+    validations:
+      required: true
+
+  - type: textarea
+    id: sync
+    attributes:
+      label: Logic sync settings
+      description: MTC、MMC、Sync Mode、Project Frame Rate
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: 請提供最短且可重現的步驟
+      placeholder: |
+        1. Launch Logic Video Cue
+        2. Open Logic project
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy confirmation
+      options:
+        - label: 我已移除客戶內容、私人檔名、使用者名稱與本機路徑。
+          required: true
