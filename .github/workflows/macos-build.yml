@@ -31,7 +31,7 @@ jobs:
           xcodebuild \
             -project LogicVideoCue.xcodeproj \
             -scheme LogicVideoCue \
-            -configuration Debug \
+            -configuration Release \
             -destination 'platform=macOS' \
             -derivedDataPath "$RUNNER_TEMP/LogicVideoCueDerivedData" \
             CODE_SIGNING_ALLOWED=NO \
