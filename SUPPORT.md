@@ -1,28 +1,30 @@
 # Support
 
-Logic Video Cue 是社群維護的開源 beta，支援採 best-effort 方式，不保證回覆時間、
-特定功能時程或每一種 macOS／Logic／影片 codec 組合都能運作。
+Logic Video Cue is a community-maintained open-source beta. Support is provided
+on a best-effort basis, with no guaranteed response time, feature schedule, or
+compatibility with every combination of macOS, Logic Pro, and video codec.
 
-## 適合開 Issue 的情況
+## Appropriate issues
 
-- 可以穩定重現的同步、播放、儲存或 AU Link 錯誤。
-- 特定 macOS／Logic 版本的相容性問題。
-- 清楚描述使用情境與價值的功能建議。
-- 文件錯誤或缺漏。
+- Reproducible synchronization, playback, saving, or AU Link failures.
+- Compatibility problems tied to specific macOS or Logic Pro versions.
+- Feature proposals with a clear workflow and user benefit.
+- Documentation errors or omissions.
 
-## 回報時請提供
+## Information to include
 
-- macOS、Logic Pro、Xcode 與 Logic Video Cue 版本。
-- 影片格式、Frame Rate、解析度及是否含原音。
-- Logic 的 MTC／MMC／Sync Mode 設定。
-- 可重現的最短步驟。
-- 是否可在 ProRes Proxy 測試檔上重現。
+- macOS, Logic Pro, Xcode, and Logic Video Cue versions.
+- Video format, frame rate, resolution, and whether the file contains audio.
+- Logic Pro MTC, MMC, and Sync Mode settings.
+- The shortest reliable reproduction steps.
+- Whether the issue also occurs with a ProRes Proxy test file.
 
-## 不屬於專案支援範圍
+## Outside the support scope
 
-- Logic Pro 的一般教學或第三方外掛問題。
-- 受保護、損壞或 AVFoundation 不支援的媒體。
-- 客製功能、到府設定或保證回覆的商業支援。
-- 未經簽章與公證的第三方 binary。
+- General Logic Pro training or unrelated third-party plug-in problems.
+- Protected, damaged, or AVFoundation-incompatible media.
+- Custom development, on-site setup, or guaranteed commercial support.
+- Unsigned and unnotarized binaries distributed by third parties.
 
-分享畫面或專案前，請遮蔽客戶內容、影片檔名、使用者名稱與本機路徑。
+Before sharing screenshots or project files, remove client content, video
+filenames, usernames, and local filesystem paths.

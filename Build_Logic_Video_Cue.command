@@ -13,12 +13,12 @@ output_directory="$script_dir/Build"
 output_path="$output_directory/LogicVideoCue.app"
 
 if ! command -v xcodebuild >/dev/null 2>&1; then
-  echo "找不到 xcodebuild。請先從 App Store 安裝並開啟一次 Xcode。"
-  read -k 1 "?按任意鍵結束…"
+  echo "xcodebuild was not found. Install Xcode from the Mac App Store and launch it once."
+  read -k 1 "?Press any key to exit…"
   exit 1
 fi
 
-echo "正在建立 Logic Video Cue…"
+echo "Building Logic Video Cue…"
 xcodebuild \
   -project "$project_path" \
   -scheme LogicVideoCue \
@@ -29,19 +29,19 @@ xcodebuild \
 app_path="$derived_data_path/Build/Products/Release/LogicVideoCue.app"
 
 if [[ ! -d "$app_path" ]]; then
-  echo "找不到完成的 App：$app_path"
-  read -k 1 "?按任意鍵結束…"
+  echo "The completed app could not be found: $app_path"
+  read -k 1 "?Press any key to exit…"
   exit 1
 fi
 
 echo
-echo "正在整理獨立 App…"
+echo "Preparing the standalone app…"
 /bin/mkdir -p "$output_directory"
 /usr/bin/ditto --rsrc --extattr "$app_path" "$output_path"
 
 echo
-echo "完成：$output_path"
-echo "這是包含 Logic Video Cue Link AU 的獨立 App。"
-echo "請先結束 Logic，再將它拖入「應用程式」並開啟一次。"
+echo "Complete: $output_path"
+echo "This standalone app includes the Logic Video Cue Link AU."
+echo "Quit Logic Pro, move the app to /Applications, and launch it once."
 open -R "$output_path"
-read -k 1 "?按任意鍵結束…"
+read -k 1 "?Press any key to exit…"

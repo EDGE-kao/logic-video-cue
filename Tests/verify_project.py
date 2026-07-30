@@ -616,7 +616,6 @@ def validate_build_script() -> None:
 def validate_open_source_repository() -> None:
     required_files = (
         "README.md",
-        "README.en.md",
         "LICENSE",
         "AUTHORS.md",
         "TRADEMARKS.md",
@@ -625,8 +624,7 @@ def validate_open_source_repository() -> None:
         "CONTRIBUTING.md",
         "SECURITY.md",
         "SUPPORT.md",
-        "Docs/第一次安裝與Logic設定.md",
-        "Docs/Getting-Started.en.md",
+        "Docs/Getting-Started.md",
         "Docs/Publishing.md",
         ".github/workflows/portable-checks.yml",
         ".github/workflows/macos-build.yml",
@@ -651,11 +649,69 @@ def validate_open_source_repository() -> None:
         "**Original creator & maintainer: [Kao Ko Feng](AUTHORS.md)**",
         "[GNU General Public License v3.0 or later](LICENSE)",
         "[TRADEMARKS.md](TRADEMARKS.md)",
-        "Docs/第一次安裝與Logic設定.md",
-        "MIDI Time Code（MTC）",
-        "MIDI Machine Control（MMC）",
+        "Docs/Getting-Started.md",
+        "MIDI Time Code (MTC)",
+        "MIDI Machine Control (MMC)",
     ):
         check(token in readme, f"README is missing {token}")
+
+    public_english_texts = (
+        "README.md",
+        "AUTHORS.md",
+        "TRADEMARKS.md",
+        "CHANGELOG.md",
+        "CONTRIBUTING.md",
+        "SECURITY.md",
+        "SUPPORT.md",
+        "Docs/Getting-Started.md",
+        "Docs/Publishing.md",
+        ".github/ISSUE_TEMPLATE/bug_report.yml",
+        ".github/ISSUE_TEMPLATE/feature_request.yml",
+        ".github/ISSUE_TEMPLATE/config.yml",
+        ".github/pull_request_template.md",
+        ".github/workflows/portable-checks.yml",
+        ".github/workflows/macos-build.yml",
+        "Build_Logic_Video_Cue.command",
+    )
+    for relative_path in public_english_texts:
+        document = (ROOT / relative_path).read_text(encoding="utf-8")
+        check(
+            re.search(r"[\u3040-\u30ff\u3400-\u9fff\uac00-\ud7af]", document)
+            is None,
+            f"Public repository text must be English-only: {relative_path}",
+        )
+
+    getting_started = (ROOT / "Docs/Getting-Started.md").read_text(
+        encoding="utf-8"
+    )
+    for token in (
+        "`Add Videos`",
+        "`Auto Arrange Again`",
+        "`Video Output`",
+        "`Keep Output Window on Top`",
+        "`Link Current Cue Project`",
+    ):
+        check(
+            token in getting_started,
+            f"Getting Started is missing the exact UI label {token}",
+        )
+
+    bug_template = (
+        ROOT / ".github" / "ISSUE_TEMPLATE" / "bug_report.yml"
+    ).read_text(encoding="utf-8")
+    check(
+        "v0.5.0 Build 10" in bug_template,
+        "Bug-report template version placeholder is out of date",
+    )
+
+    macos_workflow = (
+        ROOT / ".github" / "workflows" / "macos-build.yml"
+    ).read_text(encoding="utf-8")
+    check(
+        "-configuration Release" in macos_workflow
+        and "-configuration Debug" not in macos_workflow,
+        "macOS CI must build the user-facing Release configuration",
+    )
 
     authors = (ROOT / "AUTHORS.md").read_text(encoding="utf-8")
     check(
