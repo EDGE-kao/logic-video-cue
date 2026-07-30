@@ -1,0 +1,33 @@
+# macOS
+.DS_Store
+
+# Xcode local state
+DerivedData/
+.build/
+Build/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+xcuserdata/
+
+# Build products and archives
+*.app
+*.appex
+*.dSYM
+*.dSYM.zip
+*.xcarchive
+*.zip
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Local projects and reference media
+*.lvcue
+*.mov
+*.mp4
+*.m4v
+
+# Local configuration
+.env
+.env.*
